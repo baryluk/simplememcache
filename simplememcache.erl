@@ -49,7 +49,7 @@ add(K, V) ->
 	add(?IP, K, V).
 
 add(IP, K, V) ->
-	client(IP, {add, K, term_to_binary("dupablada",[{compressed,8},{minor_version,1}])}).
+	client(IP, {add, K, term_to_binary(V,[{compressed,8},{minor_version,1}])}).
 
 get(K) ->
 	get(?IP, K).
