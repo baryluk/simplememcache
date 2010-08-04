@@ -1,4 +1,4 @@
--module(si).
+-module(simplememcache_stress).
 -export([go/0]).
 
 go() ->
