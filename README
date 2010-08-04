@@ -25,3 +25,10 @@ Start as many clients you wish.
 Server supports concurant access
 
 No support for cleaning up the cache yet.
+
+No flow control.
+
+Not connection limiting.
+
+
+NOTE: ALPHA QUALITY VERSION.
