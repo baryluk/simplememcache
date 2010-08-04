@@ -1,0 +1,27 @@
+Simple memory cache.
+
+
+compile:
+   $ erlc simplememcache.erl
+
+
+start server:
+   $ erl
+   1> simplememcache:start().
+
+    leave it running.
+
+start clients:
+   $ erl
+   1> simplememcache:add("ala", "ma kota").
+   true
+   2> simplememcache:add("kot", "ma ala").
+   true
+   3> simplememcache:get("ala").
+   "ma kota"
+
+Start as many clients you wish.
+
+Server supports concurant access
+
+No support for cleaning up the cache yet.
