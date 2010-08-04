@@ -47,14 +47,16 @@ loop(I, Tab, Socket) ->
 	end.
 
 process(Tab, Socket, Src_IP, Src_Port, Packet) ->
-	Data = case ?B2T(Packet) of
-		{add, Key, Value} ->
-			ets:insert(Tab, {Key, Value});
+	case ?B2T(Packet) of
 		{get, Key} ->
-			ets:lookup(Tab, Key)
+			gen_udp:send(Socket, Src_IP, Src_Port, ?T2B(ets:lookup(Tab, Key)));
+		{async_add, Key, Value} ->
+			ets:insert(Tab, {Key, Value}),
+			ok;
+		{add, Key, Value} ->
+			gen_udp:send(Socket, Src_IP, Src_Port, ?T2B(ets:insert(Tab, {Key, Value})))
 	end,
-	BackPacket = ?T2B(Data),
-	ok = gen_udp:send(Socket, Src_IP, Src_Port, BackPacket).
+	ok.
 
 
 add(K, V) ->
@@ -76,7 +78,7 @@ async_add(IP, K, V) ->
 			Socket1;
 		Socket1 -> Socket1
 	end,
-	Data = {add, K, ?T2B_CLIENT(V)},
+	Data = {async_add, K, ?T2B_CLIENT(V)},
 	Port = ?PORT,
 	Packet = ?T2B(Data),
 	ok = gen_udp:send(Socket, IP, Port, Packet).
